@@ -1,6 +1,8 @@
 import 'package:firebase_android/model/model.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 final FirebaseDatabase database = FirebaseDatabase.instance;
 
@@ -58,6 +60,24 @@ databaseReference.onChildAdded.listen(_onEntryChanged);
       ),
       body:Column(
         children: <Widget>[
+
+
+          FlatButton(
+          child: Text("Google-Sign In"),
+      color: Colors.red,
+      onPressed: () => _googleSignin(),
+      ),
+          FlatButton(
+          child: Text("Signin with Email"),
+            onPressed: (){},
+
+          ),
+
+          FlatButton(
+    child: Text("Create account"),
+    onPressed: () {},
+    ),
+
 
           Flexible(
             flex: 0,
@@ -185,4 +205,6 @@ databaseReference.push().set(board.toJson());
    });
 
   }
+
+  _googleSignin() {}
 }
