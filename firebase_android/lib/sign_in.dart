@@ -1,28 +1,40 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
-String name,email,imageUrl;
 
-Future<String> signInWithGoogle() async{
+String name;
+String email;
+String imageUrl;
+
+Future<String> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  final GoogleSignInAuthentication googleSignInAuthentication =
+  await googleSignInAccount.authentication;
 
-  final GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
+  final AuthCredential credential = GoogleAuthProvider.getCredential(
+    accessToken: googleSignInAuthentication.accessToken,
+    idToken: googleSignInAuthentication.idToken,
+  );
 
-  final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: gSA.idToken, accessToken: gSA.accessToken);
+  final FirebaseUser user = await _auth.signInWithCredential(credential);
 
-  final FirebaseUser user = (await _auth.signInWithCredential(credential)) as FirebaseUser;
-  assert(user.email!=null);
-  assert(user.displayName!=null);
-  assert(user.photoUrl!=null);
-  name=user.displayName;
-  email=user.email;
-  imageUrl=user.photoUrl;
+  // Checking if email and name is null
+  assert(user.email != null);
+  assert(user.displayName != null);
+  assert(user.photoUrl != null);
 
+  name = user.displayName;
+  email = user.email;
+  imageUrl = user.photoUrl;
 
-if(name.contains("")) {
-  name = name.substring(0, name.indexOf(""));
+  // Only taking the first part of the name, i.e., First Name
+  if (name.contains(" ")) {
+    name = name.substring(0, name.indexOf(" "));
+  }
 
   assert(!user.isAnonymous);
   assert(await user.getIdToken() != null);
@@ -32,10 +44,9 @@ if(name.contains("")) {
 
   return 'signInWithGoogle succeeded: $user';
 }
-}
+
 void signOutGoogle() async{
   await googleSignIn.signOut();
 
-  print(("User signed out"));
+  print("User Sign Out");
 }
-

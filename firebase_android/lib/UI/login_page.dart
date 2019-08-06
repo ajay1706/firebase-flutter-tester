@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../sign_in.dart';
 import '../firstScreen.dart';
+
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -26,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
   Widget _signInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
@@ -65,5 +68,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  }
-
+}
