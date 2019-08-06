@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+   final FirebaseAuth _auth = FirebaseAuth.instance;
+   final GoogleSignIn googleSignIn = new GoogleSignIn();
+
+
+   Future<FirebaseUser> _signIn() async{
+     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+     GoogleSignInAuthentication gsa = await googleSignInAccount.authentication;
+
+
+     FirebaseUser user = await _auth.signInWithGoogle(
+       idToken:gsa.idToken;
+    accessToken:gsa.accessToken
+     );
+     print("username: ${user.displayName}");
+   }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
